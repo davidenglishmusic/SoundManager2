@@ -85,8 +85,8 @@ function SoundManager(smURL, smID) {
     html5Test: /^(probably|maybe)$/i, // HTML5 Audio() format support test. Use /^probably$/i; if you want to be more conservative.
     preferFlash: false,               // overrides useHTML5audio, will use Flash for MP3/MP4/AAC if present. Potential option if HTML5 playback with these formats is quirky.
     noSWFCache: false,                // if true, appends ?ts={date} to break aggressive SWF caching.
-    idPrefix: 'sound'                 // if an id is not provided to createSound(), this prefix is used for generated IDs - 'sound0', 'sound1' etc.
-
+    idPrefix: 'sound',                // if an id is not provided to createSound(), this prefix is used for generated IDs - 'sound0', 'sound1' etc.
+    deferSoundCreateHTML5Setup: false    // allows sounds to be created without stopping the current playback but probably disables autoplay
   };
 
   this.defaultOptions = {
@@ -544,7 +544,9 @@ function SoundManager(smURL, smID) {
         sm2._wD(options.id + ': Using HTML5');
       }
       // </d>
-      oSound._setup_html5(options);
+      if (!sm2.setupOptions.deferSoundCreateHTML5Setup) {
+        oSound._setup_html5(options);
+      }
 
     } else {
 
